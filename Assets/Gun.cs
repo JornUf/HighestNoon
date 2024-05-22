@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Gun : MonoBehaviour
 {
-    [SerializeField] private float damage = 10f;
+    [SerializeField] private int damage = 5;
     [SerializeField] private float shootDelay = 0.1f;
     [SerializeField] private float range = 100f;
     [SerializeField] private int bulletAmount = 6;
@@ -17,6 +17,10 @@ public class Gun : MonoBehaviour
     [SerializeField] private List<Image> cards = new List<Image>();
     [SerializeField] private Sprite guncard;
     [SerializeField] private Sprite cardback;
+
+    [SerializeField] private AudioSource shootsound;
+
+    [SerializeField] private ResourceManager resourceManager;
 
     private float shootct = 0;
     private int currentBulletAmount = 6;
@@ -34,6 +38,7 @@ public class Gun : MonoBehaviour
         if (Input.GetButton("Fire1") && shootct > shootDelay && currentBulletAmount > 0)
         {
             _animator.Play("Nothing");
+            shootsound.Play();
             reloading = false;
             currentBulletAmount--;
             updateUI();
@@ -53,7 +58,7 @@ public class Gun : MonoBehaviour
     {
         if (reloading)
         {
-            currentBulletAmount = bulletAmount;
+            currentBulletAmount = 6;
             updateUI();
             reloading = false;
         }
@@ -80,6 +85,13 @@ public class Gun : MonoBehaviour
         if (Physics.Raycast(_camera.transform.position, _camera.transform.forward, out hit, range))
         {
             Debug.Log(hit.transform.name);
+            if (hit.transform.parent != null)
+            {
+                if (hit.transform.parent.gameObject.GetComponent<TowerScript>())
+                {
+                    hit.transform.parent.gameObject.GetComponent<TowerScript>().PlayerShotAt(damage);
+                }
+            }
         }
     }
 }
