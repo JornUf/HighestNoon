@@ -58,7 +58,7 @@ public class Gun : MonoBehaviour
     {
         if (reloading)
         {
-            currentBulletAmount = 6;
+            currentBulletAmount = resourceManager.reload(bulletAmount);
             updateUI();
             reloading = false;
         }

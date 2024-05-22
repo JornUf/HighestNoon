@@ -1642,7 +1642,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ecb183ead20b474a9dc5e8e1e9c32cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: {fileID: 0}
+  text: {fileID: 1814422315}
+  AmountOfResources: 5
 --- !u!4 &629903921
 Transform:
   m_ObjectHideFlags: 0
@@ -2399,7 +2400,7 @@ MonoBehaviour:
   guncard: {fileID: 21300000, guid: 79edf1d3242e27f40b06ec9f62600bc3, type: 3}
   cardback: {fileID: 21300000, guid: c6e67e06aeb5e9140a5b56042f3cf558, type: 3}
   shootsound: {fileID: 1287427467}
-  resourceManager: {fileID: 0}
+  resourceManager: {fileID: 629903920}
 --- !u!1001 &873576159
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5553,7 +5554,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a34248ec520fd23429433cee4245b7cc, type: 2}
+  - {fileID: 2100000, guid: 0fe09d884d05833478278bfad09bb050, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
