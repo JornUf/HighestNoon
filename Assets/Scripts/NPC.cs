@@ -7,24 +7,26 @@ using Random = UnityEngine.Random;
 
 public class NPC : MonoBehaviour
 {
+    [SerializeField] private Transform forwardTarget;
+
     [SerializeField] private Animator animator;
 
     [SerializeField] private float speed = 1.0f;
     [SerializeField] private float attackcd = 2f;
-    
+
     private Transform target;
 
     private TowerScript towerScript;
 
     [SerializeField] private GameObject cardPickup;
     [SerializeField] private Collider collider;
-    
+
     [SerializeField] private List<AudioClip> walkclips = new List<AudioClip>();
     [SerializeField] private AudioSource walkingAudioSource;
     [SerializeField] private float walkdelay = 0.5f;
 
     public NPCManager manager;
-    
+
     private float walktimer = 0;
 
 
@@ -36,12 +38,17 @@ public class NPC : MonoBehaviour
 
     private float spawnInDelay = 0.1f;
 
+    public bool seekTarget = false;
+
+    private int bonusRange;
 
     void Start()
     {
-
+        bonusRange = Random.Range(0, 30);
     }
     
+
+
     void Update()
     {
         if (target == null || towerScript == null)
@@ -56,8 +63,11 @@ public class NPC : MonoBehaviour
         }
         else if (alive)
         {
+            if (transform.position.z + bonusRange > -95 && transform.position.z + bonusRange < 10)
+            {
+                seekTarget = true;
+            }
             attackTimer += Time.deltaTime;
-            transform.LookAt(target);
             animator.SetBool("Walking", walking);
             if (walking)
             {
@@ -68,28 +78,39 @@ public class NPC : MonoBehaviour
                     walkingAudioSource.clip = walkclips[rng];
                     walkingAudioSource.Play();
                     if (Input.GetKey(KeyCode.LeftShift))
-                        walktimer = walkdelay /3;
+                        walktimer = walkdelay / 3;
                     else
                         walktimer = 0;
                 }
-                
+
                 // Move our position a step closer to the target.
                 var step = speed * Time.deltaTime; // calculate distance to move
-                transform.position = Vector3.MoveTowards(transform.position, target.position, step);
+                if (seekTarget)
+                {            
+                    transform.LookAt(target);
+                    transform.position = Vector3.MoveTowards(transform.position, target.position, step);
+                }
+                else
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, forwardTarget.position, step);
+                }
 
                 // Check if the position of the cube and sphere are approximately equal.
-                if (Vector3.Distance(transform.position, target.position) < 10 + (towerScript.sizeIncrease * towerScript.amountOfPieces))
+                if (Vector3.Distance(transform.position, target.position) <
+                    10 + (towerScript.sizeIncrease * towerScript.amountOfPieces))
                 {
                     walking = false;
                 }
             }
             else
             {
-                if (Vector3.Distance(transform.position, target.position) < 10 + (towerScript.sizeIncrease * towerScript.amountOfPieces))
+                if (Vector3.Distance(transform.position, target.position) <
+                    10 + (towerScript.sizeIncrease * towerScript.amountOfPieces))
                 {
                     if (attackTimer >= attackcd)
                     {
                         animator.SetTrigger("Attack");
+                        towerScript.EnemyAttack(2);
                         attackTimer = 0;
                     }
                 }

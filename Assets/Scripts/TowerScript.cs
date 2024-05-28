@@ -40,8 +40,15 @@ public class TowerScript : MonoBehaviour
         currentHp -= damage;
         if (currentHp <= 0)
         {
+            if (amountOfPieces <= 0)
+            {
+                //game over
+                return;
+            }
             currentHp = hpPerPart;
-            towerList.RemoveAt(amountOfPieces);
+            GameObject objectToKill = towerList[amountOfPieces -1];
+            towerList.RemoveAt(amountOfPieces -1);
+            Destroy(objectToKill);
             amountOfPieces--;
             //transform.localScale = new Vector3(transform.localScale.x / 1.1f, transform.localScale.y,transform.localScale.z / 1.1f);
         }
