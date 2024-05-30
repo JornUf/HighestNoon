@@ -26,6 +26,8 @@ public class Gun : MonoBehaviour
 
     [SerializeField] private Transform barrel;
 
+    [SerializeField] private bool tutorial = false;
+
     private float shootct = 0;
     private int currentBulletAmount = 6;
 
@@ -34,6 +36,11 @@ public class Gun : MonoBehaviour
     private void Start()
     {
         currentBulletAmount = bulletAmount;
+        if (tutorial)
+        {
+            currentBulletAmount = 0;
+            updateUI();
+        }
     }
 
     void Update()

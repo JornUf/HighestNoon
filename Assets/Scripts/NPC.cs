@@ -25,6 +25,8 @@ public class NPC : MonoBehaviour
     [SerializeField] private AudioSource walkingAudioSource;
     [SerializeField] private float walkdelay = 0.5f;
 
+    [SerializeField] private bool tutorialnpc = false;
+
     public NPCManager manager;
 
     private float walktimer = 0;
@@ -97,7 +99,7 @@ public class NPC : MonoBehaviour
 
                 // Check if the position of the cube and sphere are approximately equal.
                 if (Vector3.Distance(transform.position, target.position) <
-                    10 + (towerScript.sizeIncrease * towerScript.amountOfPieces))
+                    10 + (towerScript.sizeIncrease/10 * towerScript.amountOfPieces))
                 {
                     walking = false;
                 }
@@ -105,7 +107,7 @@ public class NPC : MonoBehaviour
             else
             {
                 if (Vector3.Distance(transform.position, target.position) <
-                    10 + (towerScript.sizeIncrease * towerScript.amountOfPieces))
+                    10 + (towerScript.sizeIncrease/10 * towerScript.amountOfPieces))
                 {
                     if (attackTimer >= attackcd)
                     {
@@ -122,11 +124,29 @@ public class NPC : MonoBehaviour
     {
         if (alive)
         {
-            manager.RemoveNPC(this);
+            if(!tutorialnpc)
+                manager.RemoveNPC(this);
             collider.isTrigger = true;
             collider.enabled = false;
             animator.Play("death");
-            Instantiate(cardPickup, transform.position, transform.rotation);
+            int rngcards = Random.Range(1, 4);
+            if (tutorialnpc)
+                rngcards = 2;
+            for (int i = 0; i < rngcards; i++)
+            {
+                int rngX = Random.Range(1, 2);
+                if (rngX == 2)
+                {
+                    rngX = -1;
+                }
+                int rngY = Random.Range(1, 2);
+                if (rngY == 2)
+                {
+                    rngY = -1;
+                }
+                Instantiate(cardPickup, transform.position + new Vector3(rngX * i, 0, rngY * i), transform.rotation);
+            }
+
             alive = false;
         }
     }

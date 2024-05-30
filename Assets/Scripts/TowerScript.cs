@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TowerScript : MonoBehaviour
 {
@@ -10,14 +12,26 @@ public class TowerScript : MonoBehaviour
 
     [SerializeField] private int hpPerPart = 10;
     [SerializeField] private int hpNeedToUpgrade = 5;
+
+    [SerializeField] private Material standard;
+    [SerializeField] private Material damaged;
     public float sizeIncrease = 0.5f;
 
     private int currentHp;
 
     public int amountOfPieces = 1;
 
+    private void Start()
+    {
+        currentHp = hpPerPart;
+    }
+
     public void PlayerShotAt(int damage)
     {
+        if (currentHp >= hpPerPart && amountOfPieces > 1)
+        {
+            towerList[amountOfPieces -1].GetComponent<MeshRenderer>().material = standard;
+        }
         currentHp += damage;
         if (currentHp > hpPerPart + hpNeedToUpgrade)
         {
@@ -42,7 +56,7 @@ public class TowerScript : MonoBehaviour
         {
             if (amountOfPieces <= 0)
             {
-                //game over
+                SceneManager.LoadScene("Lose");
                 return;
             }
             currentHp = hpPerPart;
@@ -51,6 +65,10 @@ public class TowerScript : MonoBehaviour
             Destroy(objectToKill);
             amountOfPieces--;
             //transform.localScale = new Vector3(transform.localScale.x / 1.1f, transform.localScale.y,transform.localScale.z / 1.1f);
+        }
+        else if(amountOfPieces > 1)
+        {
+            towerList[amountOfPieces].GetComponent<MeshRenderer>().material = damaged;
         }
     }
 }
