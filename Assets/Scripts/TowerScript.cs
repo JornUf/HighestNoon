@@ -68,7 +68,7 @@ public class TowerScript : MonoBehaviour
         }
         else if(amountOfPieces > 1)
         {
-            towerList[amountOfPieces].GetComponent<MeshRenderer>().material = damaged;
+            towerList[amountOfPieces -1].GetComponent<MeshRenderer>().material = damaged;
         }
     }
 }

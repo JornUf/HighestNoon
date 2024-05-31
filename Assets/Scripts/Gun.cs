@@ -7,7 +7,7 @@ public class Gun : MonoBehaviour
 {
     [SerializeField] private int damage = 5;
     [SerializeField] private float shootDelay = 0.1f;
-    [SerializeField] private float range = 100f;
+    private float range = 1000f;
     [SerializeField] private int bulletAmount = 6;
 
     [SerializeField] private Camera _camera;
@@ -97,7 +97,6 @@ public class Gun : MonoBehaviour
         if (Physics.Raycast(_camera.transform.position, _camera.transform.forward, out hit, range))
         {
             vb.MakeShootLine(hit.point, barrel.position);
-            Debug.Log(hit.transform.name);
             if (hit.transform.parent != null)
             {
                 if (hit.transform.parent.gameObject.GetComponent<TowerScript>())

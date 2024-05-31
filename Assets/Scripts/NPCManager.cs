@@ -8,7 +8,7 @@ public class NPCManager : MonoBehaviour
 {
     [SerializeField] private GameObject NPC;
     [SerializeField] private List<Transform> spawnPoints;
-    [SerializeField] private int EnemiesPerMinute = 3;
+    public int EnemiesPerMinute = 12;
     private float roundTime = 60;
     
     public Transform target;
