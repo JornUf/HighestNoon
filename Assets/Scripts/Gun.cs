@@ -59,6 +59,7 @@ public class Gun : MonoBehaviour
 
         if ((Input.GetButton("Reload") && !reloading || (Input.GetButton("Fire1") && currentBulletAmount <= 0 && !reloading)) && resourceManager.AmountOfResources > 0)
         {
+            _animator.Play("Nothing");
             _animator.SetTrigger("Reload");
             reloading = true;
             Invoke("bulletInsert", 1.6f);

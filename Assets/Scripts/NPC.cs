@@ -7,6 +7,9 @@ using Random = UnityEngine.Random;
 
 public class NPC : MonoBehaviour
 {
+    
+    [SerializeField] private AudioSource deathsound;
+    
     [SerializeField] private Transform forwardTarget;
 
     [SerializeField] private Animator animator;
@@ -116,6 +119,10 @@ public class NPC : MonoBehaviour
                         attackTimer = 0;
                     }
                 }
+                else
+                {
+                    walking = true;
+                }
             }
         }
     }
@@ -129,6 +136,8 @@ public class NPC : MonoBehaviour
             collider.isTrigger = true;
             collider.enabled = false;
             animator.Play("death");
+            if(deathsound != null)
+                deathsound.Play();
             int rngcards = Random.Range(1, 4);
             if (tutorialnpc)
                 rngcards = 2;
@@ -146,8 +155,14 @@ public class NPC : MonoBehaviour
                 }
                 Instantiate(cardPickup, transform.position + new Vector3(rngX * i, 0, rngY * i), transform.rotation);
             }
-
             alive = false;
+            StartCoroutine(despawn());
         }
+    }
+
+    IEnumerator despawn()
+    {
+        yield return new WaitForSeconds(10);
+        GameObject.Destroy(this.gameObject);
     }
 }
