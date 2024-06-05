@@ -360,7 +360,7 @@ MonoBehaviour:
   deathsound: {fileID: 3917039345236928367}
   forwardTarget: {fileID: 4927025779169115937}
   animator: {fileID: 6580002685974061810}
-  speed: 5
+  speed: 7
   attackcd: 2
   cardPickup: {fileID: 1380372662481407972, guid: 29f5cd2864cc5db4e9828dfab659fb11, type: 3}
   collider: {fileID: 8507963466752977328}
